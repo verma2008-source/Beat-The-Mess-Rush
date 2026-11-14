@@ -1,0 +1,953 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beat The Mess Rush</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f6fc;
+    color: #172033;
+}
+
+header {
+    background: linear-gradient(120deg, #172554, #3157d5);
+    color: white;
+    padding: 25px 7%;
+}
+
+header h1 {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+header p {
+    color: #dce5ff;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 18px;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 15px #17255410;
+}
+
+nav button {
+    flex: 1;
+    min-width: 120px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+nav button.active {
+    background: #eaf0ff;
+    color: #3157d5;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+h2 {
+    margin-bottom: 8px;
+    font-size: 22px;
+}
+
+.subtitle {
+    color: #64748b;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.meals {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.meals button {
+    padding: 11px 19px;
+    border: 1px solid #dce2ed;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.meals button.active {
+    background: #172554;
+    color: white;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 13px;
+    box-shadow: 0 4px 15px #17255410;
+    margin-bottom: 16px;
+}
+
+.stat-title {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 12px 0 5px;
+}
+
+.small {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.progress {
+    height: 13px;
+    background: #e9edf5;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 18px 0 10px;
+}
+
+#progressBar {
+    height: 100%;
+    width: 0%;
+    background: #3157d5;
+    border-radius: 20px;
+    transition: width 0.3s;
+}
+
+.status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.low {
+    background: #e5f8ec;
+    color: #138a58;
+}
+
+.moderate {
+    background: #fff1d9;
+    color: #b96912;
+}
+
+.high {
+    background: #ffeaed;
+    color: #c33d4a;
+}
+
+.reports {
+    margin-top: 12px;
+}
+
+.report {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e6eaf2;
+    padding: 14px 0;
+}
+
+.report:last-child {
+    border-bottom: none;
+}
+
+.report-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.report-info {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.report-right {
+    text-align: right;
+}
+
+form {
+    max-width: 700px;
+    margin: auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #dce2ed;
+    border-radius: 8px;
+    margin-bottom: 17px;
+    font-size: 14px;
+    background: white;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #d5defd;
+    border-color: #3157d5;
+}
+
+.main-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #3157d5;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-btn:hover {
+    background: #2445b5;
+}
+
+.message {
+    color: #138a58;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+}
+
+.note {
+    margin-top: 18px;
+    padding: 13px;
+    background: #eef3ff;
+    border-radius: 9px;
+    color: #40517c;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.empty {
+    text-align: center;
+    color: #64748b;
+    padding: 20px;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    color: #8490a5;
+    font-size: 12px;
+    padding: 25px;
+}
+
+@media(max-width: 750px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 450px) {
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    nav button {
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍽️ Beat The Mess Rush</h1>
+    <p>Know the crowd. Find your calm. Make mealtime easier.</p>
+</header>
+
+<div class="container">
+
+<nav>
+    <button class="active" onclick="showPage('dashboard', this)">
+        📊 Dashboard
+    </button>
+
+    <button onclick="showPage('student', this)">
+        🎓 Student Update
+    </button>
+
+    <button onclick="showPage('manager', this)">
+        🛠️ Manager Panel
+    </button>
+</nav>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+    <h2>Mess Crowd Overview</h2>
+    <p class="subtitle">
+        Check the current mess crowd and available seats.
+    </p>
+
+    <div class="meals">
+        <button class="active" onclick="changeMeal('breakfast', this)">
+            Breakfast
+        </button>
+
+        <button onclick="changeMeal('lunch', this)">
+            Lunch
+        </button>
+
+        <button onclick="changeMeal('dinner', this)">
+            Dinner
+        </button>
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <div class="stat-title">Occupied Seats</div>
+            <div class="stat-number" id="occupied">72</div>
+            <div class="small">Currently occupied</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-title">Empty Seats</div>
+            <div class="stat-number" id="empty">128</div>
+            <div class="small">Seats available</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-title">Total Capacity</div>
+            <div class="stat-number" id="capacity">200</div>
+            <div class="small">Total seats</div>
+        </div>
+
+        <div class="card">
+            <div class="stat-title">Occupancy</div>
+            <div class="stat-number" id="percentage">36%</div>
+            <div class="small" id="crowdText">Low crowd</div>
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Current Mess Occupancy</h3>
+
+        <div class="progress">
+            <div id="progressBar"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:10px;">
+            <span class="small" id="seatText">
+                72 of 200 seats occupied
+            </span>
+
+            <span id="crowdBadge" class="status low">
+                LOW CROWD
+            </span>
+        </div>
+
+        <p class="small" id="lastUpdate" style="margin-top:15px;">
+            Last updated: Demo data
+        </p>
+
+    </div>
+
+    <div class="card">
+        <h3>Latest Student Reports</h3>
+        <p class="subtitle" style="margin-top:6px;">
+            Crowd reports submitted by students.
+        </p>
+
+        <div id="reportList" class="reports"></div>
+    </div>
+
+    <div class="card">
+        <h3>How to understand crowd levels</h3>
+        <p style="margin-top:12px; line-height:2;">
+            🟢 <b>Low:</b> Plenty of seats available<br>
+            🟠 <b>Moderate:</b> Mess is getting busy<br>
+            🔴 <b>High:</b> Mess is crowded
+        </p>
+    </div>
+
+</section>
+
+<!-- STUDENT UPDATE -->
+
+<section id="student" class="page">
+
+    <div class="card">
+
+        <h2>Student Crowd Update</h2>
+
+        <p class="subtitle">
+            Help other students by sharing the current crowd.
+        </p>
+
+        <form id="studentForm">
+
+            <label for="studentName">Student Name</label>
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Enter your name"
+                maxlength="40"
+                required
+            >
+
+            <label for="studentMeal">Select Meal</label>
+            <select id="studentMeal">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+
+            <label for="studentCrowd">Current Crowd Level</label>
+            <select id="studentCrowd">
+                <option value="Low">Low</option>
+                <option value="Moderate">Moderate</option>
+                <option value="High">High</option>
+            </select>
+
+            <label for="estimate">Estimated Number of Students</label>
+            <input
+                type="number"
+                id="estimate"
+                min="0"
+                placeholder="Example: 85"
+            >
+
+            <button class="main-btn" type="submit">
+                Submit Crowd Report
+            </button>
+
+            <p id="studentMessage" class="message">
+                ✓ Your report has been submitted successfully!
+            </p>
+
+        </form>
+
+        <div class="note">
+            Your report will immediately appear in the dashboard
+            on this website.
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MANAGER PANEL -->
+
+<section id="manager" class="page">
+
+    <div class="card">
+
+        <h2>Mess Manager Panel</h2>
+
+        <p class="subtitle">
+            Update the official seat availability.
+        </p>
+
+        <form id="managerForm">
+
+            <label for="managerMeal">Select Meal</label>
+            <select id="managerMeal">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+
+            <label for="totalSeats">Total Seat Capacity</label>
+            <input
+                type="number"
+                id="totalSeats"
+                min="1"
+                value="200"
+                required
+            >
+
+            <label for="occupiedSeats">Currently Occupied Seats</label>
+            <input
+                type="number"
+                id="occupiedSeats"
+                min="0"
+                value="72"
+                required
+            >
+
+            <button class="main-btn" type="submit">
+                Update Seat Availability
+            </button>
+
+            <p id="managerMessage" class="message">
+                ✓ Seat availability updated successfully!
+            </p>
+
+        </form>
+
+        <div class="note">
+            Empty seats and occupancy percentage are automatically
+            calculated after saving.
+        </div>
+
+        <p class="small" style="margin-top:15px; line-height:1.5;">
+            Presentation prototype: the manager panel has no login.
+            Use sample information only.
+        </p>
+
+    </div>
+
+</section>
+
+</div>
+
+<footer>
+    Beat The Mess Rush | Design Thinking Project
+</footer>
+
+<script>
+
+// INITIAL SAMPLE DATA
+
+const defaultData = {
+    breakfast: {
+        capacity: 200,
+        occupied: 72,
+        updatedAt: "Demo data",
+        reports: [
+            {
+                name: "Aarav Sharma",
+                crowd: "Low",
+                estimate: 65,
+                time: "Sample report"
+            },
+            {
+                name: "Priya Singh",
+                crowd: "Moderate",
+                estimate: 80,
+                time: "Sample report"
+            }
+        ]
+    },
+
+    lunch: {
+        capacity: 200,
+        occupied: 148,
+        updatedAt: "Demo data",
+        reports: [
+            {
+                name: "Rohan Mehta",
+                crowd: "High",
+                estimate: 150,
+                time: "Sample report"
+            },
+            {
+                name: "Ananya Verma",
+                crowd: "High",
+                estimate: 160,
+                time: "Sample report"
+            }
+        ]
+    },
+
+    dinner: {
+        capacity: 200,
+        occupied: 105,
+        updatedAt: "Demo data",
+        reports: [
+            {
+                name: "Kabir Malhotra",
+                crowd: "Moderate",
+                estimate: 110,
+                time: "Sample report"
+            },
+            {
+                name: "Meera Kapoor",
+                crowd: "Moderate",
+                estimate: 100,
+                time: "Sample report"
+            }
+        ]
+    }
+};
+
+const STORAGE_KEY = "beatTheMessRushData";
+
+let data;
+
+try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    data = saved ? JSON.parse(saved) : structuredClone(defaultData);
+} catch (error) {
+    data = JSON.parse(JSON.stringify(defaultData));
+}
+
+let currentMeal = "breakfast";
+
+const mealNames = {
+    breakfast: "Breakfast",
+    lunch: "Lunch",
+    dinner: "Dinner"
+};
+
+// SAVE DATA IN THE BROWSER
+
+function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// SWITCH BETWEEN WEBSITE SECTIONS
+
+function showPage(pageName, button) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageName).classList.add("active");
+
+    document.querySelectorAll("nav button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+// SELECT MEAL ON DASHBOARD
+
+function changeMeal(meal, button) {
+
+    currentMeal = meal;
+
+    document.querySelectorAll(".meals button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    updateDashboard();
+}
+
+// CROWD LEVEL STYLE
+
+function getCrowdClass(level) {
+
+    if (level === "High") return "high";
+    if (level === "Moderate") return "moderate";
+
+    return "low";
+}
+
+// UPDATE DASHBOARD
+
+function updateDashboard() {
+
+    const meal = data[currentMeal];
+
+    const capacity = Number(meal.capacity);
+    const occupied = Number(meal.occupied);
+
+    const empty = capacity - occupied;
+
+    const percentage = Math.round(
+        (occupied / capacity) * 100
+    );
+
+    let level;
+
+    if (percentage >= 70) {
+        level = "High";
+    } else if (percentage >= 40) {
+        level = "Moderate";
+    } else {
+        level = "Low";
+    }
+
+    document.getElementById("occupied").textContent = occupied;
+    document.getElementById("empty").textContent = empty;
+    document.getElementById("capacity").textContent = capacity;
+    document.getElementById("percentage").textContent = percentage + "%";
+
+    document.getElementById("crowdText").textContent =
+        level + " crowd";
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+    document.getElementById("seatText").textContent =
+        occupied + " of " + capacity + " seats occupied";
+
+    const badge = document.getElementById("crowdBadge");
+
+    badge.className = "status " + getCrowdClass(level);
+    badge.textContent = level.toUpperCase() + " CROWD";
+
+    document.getElementById("lastUpdate").textContent =
+        "Last updated: " + meal.updatedAt;
+
+    // SHOW STUDENT REPORTS
+
+    const reportList = document.getElementById("reportList");
+
+    reportList.innerHTML = "";
+
+    const reports = [...meal.reports].reverse();
+
+    if (reports.length === 0) {
+        reportList.innerHTML =
+            '<div class="empty">No reports submitted yet.</div>';
+        return;
+    }
+
+    reports.forEach(report => {
+
+        const row = document.createElement("div");
+        row.className = "report";
+
+        const left = document.createElement("div");
+
+        const name = document.createElement("div");
+        name.className = "report-name";
+        name.textContent = report.name;
+
+        const info = document.createElement("div");
+        info.className = "report-info";
+
+        info.textContent =
+            mealNames[currentMeal] + " · " + report.time;
+
+        left.appendChild(name);
+        left.appendChild(info);
+
+        const right = document.createElement("div");
+        right.className = "report-right";
+
+        const estimate = document.createElement("div");
+        estimate.className = "report-name";
+
+        estimate.textContent =
+            report.estimate !== "" &&
+            report.estimate !== null &&
+            report.estimate !== undefined
+                ? report.estimate + " people"
+                : "No estimate";
+
+        const badge = document.createElement("span");
+        badge.className =
+            "status " + getCrowdClass(report.crowd);
+
+        badge.textContent = report.crowd.toUpperCase();
+
+        right.appendChild(estimate);
+        right.appendChild(badge);
+
+        row.appendChild(left);
+        row.appendChild(right);
+
+        reportList.appendChild(row);
+
+    });
+
+}
+
+// STUDENT SUBMITS A REPORT
+
+document.getElementById("studentForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("studentName").value.trim();
+
+        const meal =
+            document.getElementById("studentMeal").value;
+
+        const crowd =
+            document.getElementById("studentCrowd").value;
+
+        const estimate =
+            document.getElementById("estimate").value;
+
+        if (!name) return;
+
+        if (estimate !== "" && Number(estimate) < 0) {
+            alert("Please enter a valid estimate.");
+            return;
+        }
+
+        data[meal].reports.push({
+
+            name: name,
+            crowd: crowd,
+            estimate: estimate,
+            time: new Date().toLocaleString()
+
+        });
+
+        saveData();
+
+        currentMeal = meal;
+
+        document.querySelectorAll(".meals button").forEach(btn => {
+            btn.classList.toggle(
+                "active",
+                btn.textContent.trim().toLowerCase() === meal
+            );
+        });
+
+        updateDashboard();
+
+        document.getElementById("studentMessage").style.display =
+            "block";
+
+        this.reset();
+
+        setTimeout(() => {
+            document.getElementById("studentMessage").style.display =
+                "none";
+        }, 3000);
+
+    }
+);
+
+// MANAGER CHANGES SELECTED MEAL
+
+document.getElementById("managerMeal").addEventListener(
+    "change",
+    function() {
+
+        const meal = data[this.value];
+
+        document.getElementById("totalSeats").value =
+            meal.capacity;
+
+        document.getElementById("occupiedSeats").value =
+            meal.occupied;
+
+    }
+);
+
+// MANAGER UPDATES SEAT AVAILABILITY
+
+document.getElementById("managerForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const meal =
+            document.getElementById("managerMeal").value;
+
+        const capacity =
+            Number(document.getElementById("totalSeats").value);
+
+        const occupied =
+            Number(document.getElementById("occupiedSeats").value);
+
+        if (
+            !Number.isInteger(capacity) ||
+            !Number.isInteger(occupied) ||
+            capacity < 1 ||
+            occupied < 0 ||
+            occupied > capacity
+        ) {
+            alert(
+                "Please enter valid seats. Occupied seats cannot exceed total capacity."
+            );
+            return;
+        }
+
+        data[meal].capacity = capacity;
+        data[meal].occupied = occupied;
+
+        data[meal].updatedAt = new Date().toLocaleString();
+
+        saveData();
+
+        currentMeal = meal;
+
+        document.querySelectorAll(".meals button").forEach(btn => {
+            btn.classList.toggle(
+                "active",
+                btn.textContent.trim().toLowerCase() === meal
+            );
+        });
+
+        updateDashboard();
+
+        document.getElementById("managerMessage").style.display =
+            "block";
+
+        setTimeout(() => {
+            document.getElementById("managerMessage").style.display =
+                "none";
+        }, 3000);
+
+    }
+);
+
+// INITIALIZE WEBSITE
+
+document.getElementById("managerMeal").dispatchEvent(
+    new Event("change")
+);
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
